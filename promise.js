@@ -16,7 +16,7 @@ let promise = new Promise(function (resolve, reject) {
   });
 
   promise.then((value) => {
-    console.log(value); // Done
+    console.log(value); // done
   });
 }
 
@@ -50,3 +50,39 @@ let promise = new Promise(function (resolve, reject) {
     resolve(123); // immediately give the result: 123
   });
 }
+
+//CONSUMING the promise results: .THEN, .CATCH
+//Syntax:
+/* 
+  promise.then(
+    function(result) { /handle a successful result / },
+    function(error) { / handle an error / }
+    );
+  */
+
+//THEN
+{
+  let promise = new Promise(function (resolve, reject) {
+    setTimeout(() => resolve('done!'), 1000);
+  });
+
+  // resolve runs the first function in .then
+  promise.then(
+    (result) => console.log(result), // shows "done!" after 1 second
+    (error) => console.log(error) // doesn't run
+  );
+}
+
+{
+  let promise = new Promise(function (resolve, reject) {
+    setTimeout(() => reject(new Error('Whoops!')), 1000);
+  });
+
+  // reject runs the second function in .then
+  promise.then(
+    (result) => console.log(result), // doesn't run
+    (error) => console.log(error) // shows "Error: Whoops!" after 1 second
+  );
+}
+
+//CATCH
