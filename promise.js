@@ -179,3 +179,16 @@ function delay(ms) {
 }
 
 delay(3000).then(() => console.log('runs after 3 seconds'));
+
+/**TASK 3
+ * Animated circle with promise
+Rewrite the showCircle function in the solution of the task Animated circle with callback so that it returns a promise instead of accepting a callback.
+
+The new usage:
+
+showCircle(150, 150, 100).then(div => {
+  div.classList.add('message-ball');
+  div.append("Hello, world!");
+});
+Take the solution of the task Animated circle with callback as the base.
+ */
