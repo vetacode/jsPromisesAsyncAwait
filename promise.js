@@ -73,6 +73,7 @@ let promise = new Promise(function (resolve, reject) {
   );
 }
 
+/*
 {
   let promise = new Promise(function (resolve, reject) {
     setTimeout(() => reject(new Error('Whoops!')), 1000);
@@ -84,11 +85,13 @@ let promise = new Promise(function (resolve, reject) {
     (error) => console.log(error) // shows "Error: Whoops!" after 1 second
   );
 }
-
+*/
 //CATCH
 //Syntax:
 //.then(null, errorHandlingFunction) = .then(f)
 //.catch(errorHandlingFunction)
+
+/*
 {
   let promise = new Promise((resolve, reject) => {
     setTimeout(() => reject(new Error('Whoops! Rejected again!')), 1000);
@@ -97,6 +100,7 @@ let promise = new Promise(function (resolve, reject) {
   // .catch(f) is the same as promise.then(null, f)
   promise.catch((value) => console.log(value)); // shows "Error: Whoops!" after 1 second
 }
+  */
 
 //Cleanup: finally
 //Syntax: .finally(f)
@@ -117,11 +121,19 @@ let promise = new Promise(function (resolve, reject) {
     .finally(() => console.log('Promise ready')) // triggers first
     .then((result) => console.log(result)); // <-- .then shows "value"
 }
-
+/*
 {
   new Promise((resolve, reject) => {
     throw new Error('error');
   })
     .finally(() => console.log('Promise ready')) // triggers first
     .catch((err) => console.log(err)); // <-- .catch shows the error
+}
+*/
+{
+  // the promise becomes resolved immediately upon creation
+  let promise = new Promise((resolve) => resolve('done! line 135'));
+
+  promise.then(console.log); // done! (shows up right now)
+  // promise.then((value) => console.log(value)); // done! (shows up right now)
 }
