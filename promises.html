@@ -1,21 +1,28 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Document</title>
-  </head>
-  <body>
+    <meta charset="utf-8" />
+    <title>Test loadScript</title>
     <script>
-      function loadScript(src) {
-        // creates a <script> tag and append it to the page
-        // this causes the script with given src to start loading and run when complete
+      function loadScript(src, callback) {
         let script = document.createElement('script');
         script.src = src;
+        script.onload = () => callback(script);
         document.head.append(script);
       }
 
-      loadScript('./script.js');
+      loadScript(
+        'https://cdnjs.cloudflare.com/ajax/libs/lodash.js/3.2.0/lodash.js',
+        (script) => {
+          alert(`Cool, the script ${script.src} is loaded`);
+          alert(_); // akan menampilkan fungsi lodash (atau [object Function])
+          console.log('window._ exists?', typeof _);
+          console.log('_.chunk example:', _.chunk([1, 2, 3, 4], 2));
+        }
+      );
     </script>
+  </head>
+  <body>
+    <h1>Open console to see output</h1>
   </body>
 </html>
