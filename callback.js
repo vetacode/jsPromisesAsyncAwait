@@ -33,7 +33,7 @@ loadScript('1.js', function (error, script) {
   }
 });
 
-//SOLUTION
+//CLASSIC SOLUTION
 loadScript('1.js', step1);
 
 function step1(error, script) {
