@@ -86,3 +86,42 @@ let promise = new Promise(function (resolve, reject) {
 }
 
 //CATCH
+//Syntax:
+//.then(null, errorHandlingFunction) = .then(f)
+//.catch(errorHandlingFunction)
+{
+  let promise = new Promise((resolve, reject) => {
+    setTimeout(() => reject(new Error('Whoops! Rejected again!')), 1000);
+  });
+
+  // .catch(f) is the same as promise.then(null, f)
+  promise.catch((value) => console.log(value)); // shows "Error: Whoops!" after 1 second
+}
+
+//Cleanup: finally
+//Syntax: .finally(f)
+{
+  new Promise((resolve, reject) => {
+    /* do something that takes time, and then call resolve or maybe reject */
+  });
+  // runs when the promise is settled, doesn't matter successfully or not
+  // .finally(() => stop loading indicator)
+  // so the loading indicator is always stopped before we go on
+  // .then(result => show result, err => show error)
+}
+
+{
+  new Promise((resolve, reject) => {
+    setTimeout(() => resolve('value'), 2000);
+  })
+    .finally(() => console.log('Promise ready')) // triggers first
+    .then((result) => console.log(result)); // <-- .then shows "value"
+}
+
+{
+  new Promise((resolve, reject) => {
+    throw new Error('error');
+  })
+    .finally(() => console.log('Promise ready')) // triggers first
+    .catch((err) => console.log(err)); // <-- .catch shows the error
+}
