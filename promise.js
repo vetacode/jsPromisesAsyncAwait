@@ -137,3 +137,25 @@ let promise = new Promise(function (resolve, reject) {
   promise.then(console.log); // done! (shows up right now)
   // promise.then((value) => console.log(value)); // done! (shows up right now)
 }
+
+/**TASK 1
+ * Re-resolve a promise?
+What’s the output of the code below?
+
+let promise = new Promise(function(resolve, reject) {
+  resolve(1);
+
+  setTimeout(() => resolve(2), 1000);
+});
+
+promise.then(alert);
+ */
+{
+  let promise = new Promise(function (resolve, reject) {
+    resolve(1);
+
+    setTimeout(() => resolve(2), 1000); // The second call to resolve is ignored, because only the first call of reject/resolve is taken into account. Further calls are ignored.
+  });
+
+  promise.then(console.log);
+}
