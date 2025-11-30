@@ -54,3 +54,27 @@ new Promise(function (resolve, reject) {
     )
     .then((result) => result * 2);
 }
+
+//example with loaded script
+function loadScript(src) {
+  return new Promise(function (resolve, reject) {
+    let script = document.createElement('script');
+    script.src = src;
+
+    script.onload = () => resolve(script);
+    script.onerror = () => reject(new Error(`Script load error for ${src}`));
+
+    document.head.append(script);
+  });
+}
+
+loadScript('/article/promise-chaining/one.js')
+  .then((script) => loadScript('/article/promise-chaining/two.js'))
+  .then((script) => loadScript('/article/promise-chaining/three.js'))
+  .then((script) => {
+    // scripts are loaded, we can use functions declared there
+    one();
+    two();
+    three();
+  })
+  .catch(console.error);
