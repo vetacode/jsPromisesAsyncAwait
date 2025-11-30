@@ -47,12 +47,12 @@ new Promise(function (resolve, reject) {
 //with arrow function
 {
   new Promise((resolve, reject) => setTimeout(resolve(1), 1000))
-    .then(
-      (result) =>
+    .then((result) => {
+      console.log(result), //1
         new Promise((resolve, reject) =>
           setTimeout(() => resolve(result * 2), 1000)
-        )
-    )
+        );
+    })
     .then((result) => result * 2);
 }
 
@@ -60,11 +60,9 @@ new Promise(function (resolve, reject) {
 function loadScript(src) {
   return new Promise(function (resolve, reject) {
     // let script = document.createElement('script');
-    script.src = src;
-
-    script.onload = () => resolve(script);
-    script.onerror = () => reject(new Error(`Script load error for ${src}`));
-
+    // script.src = src;
+    // script.onload = () => resolve(script);
+    // script.onerror = () => reject(new Error(`Script load error for ${src}`));
     // document.head.append(script);
   });
 }
@@ -87,12 +85,12 @@ class thenable {
   }
   then(resolve, reject) {
     console.log(resolve); //function() {native code}
-    setTimeout(() => resolve(this.num * 2), 1000);
+    setTimeout(() => resolve(this.num), 1000);
   }
 }
 
 new Promise((resolve) => resolve(1))
   .then((result) => {
-    return new thenable(result);
+    return new thenable(`this is the result of line 96: ${result}`);
   })
   .then(console.log);
