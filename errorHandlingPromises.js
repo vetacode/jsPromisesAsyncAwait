@@ -67,3 +67,20 @@ new Promise(function() {
   throw new Error("Whoops!");
 }); // no catch to handle the error
  */
+
+/**TASK
+ * Error in setTimeout
+What do you think? Will the .catch trigger? Explain your answer.
+
+new Promise(function(resolve, reject) {
+  setTimeout(() => {
+    throw new Error("Whoops!");
+  }, 1000);
+}).catch(alert);
+ */
+
+new Promise(function (resolve, reject) {
+  setTimeout(() => {
+    throw new Error('Whoops!');
+  }, 1000);
+}).catch(console.error); // the promise can't handle this error coz its not synchronous errors
