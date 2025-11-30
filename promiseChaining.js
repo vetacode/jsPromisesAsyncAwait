@@ -42,3 +42,15 @@ new Promise(function (resolve, reject) {
       console.log(result); //4
     });
 }
+
+//with arrow function
+{
+  new Promise((resolve, reject) => setTimeout(resolve(1), 1000))
+    .then(
+      (result) =>
+        new Promise((resolve, reject) =>
+          setTimeout(() => resolve(result * 2), 1000)
+        )
+    )
+    .then((result) => result * 2);
+}
