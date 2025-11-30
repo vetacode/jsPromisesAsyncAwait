@@ -94,3 +94,18 @@ new Promise((resolve) => resolve(1))
     return new thenable(`this is the result of line 96: ${result}`);
   })
   .then(console.log);
+
+//Bigger example: fetch
+//Basic Syntax: let promise = fetch(url);
+
+fetch('/article/promise-chaining/user.json')
+  // .then below runs when the remote server responds
+  .then(function (response) {
+    // response.text() returns a new promise that resolves with the full response text
+    // when it loads
+    return response.text();
+  })
+  .then(function (text) {
+    // ...and here's the content of the remote file
+    console.log(text); // {"name": "iliakan", "isAdmin": true}
+  });
