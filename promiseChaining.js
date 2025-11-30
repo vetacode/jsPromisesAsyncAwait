@@ -1,17 +1,21 @@
 'use strict';
 
+//.THEN chaining
+//every call to a .then returns a new promise
+
 new Promise(function (resolve, reject) {
   setTimeout(() => resolve(1), 1000);
 })
   .then(function (result) {
+    //it creates new promise
     console.log(result); //1
     return result * 2;
   })
-  .then(function (resolve) {
-    console.log(resolve); //2
-    return resolve * 2;
+  .then(function (result) {
+    console.log(result); //2
+    return result * 2;
   })
-  .then(function (resolve) {
-    console.log(resolve); //4
-    return resolve * 2;
+  .then(function (result) {
+    console.log(result); //4
+    return result * 2;
   });
