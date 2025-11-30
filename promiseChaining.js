@@ -181,3 +181,18 @@ loadJson('/article/promise-chaining/user.json')
   .then(showAvatar)
   .then((githubUser) => alert(`Finished showing ${githubUser.name}`));
 // ...
+
+/**TASK
+ * Promise: then versus catch
+Are these code fragments equal? In other words, do they behave the same way in any circumstances, for any handler functions?
+
+promise.then(f1).catch(f2);
+Versus:
+
+promise.then(f1, f2);
+ */
+//Answer: NO
+
+promise.then(f1).catch(f2); //in this code, the error happens in f1 will be cathced by f2
+//but thats not the case in code below
+promise.then(f1, f2);
