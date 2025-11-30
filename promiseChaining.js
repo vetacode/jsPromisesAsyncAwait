@@ -1,7 +1,8 @@
 'use strict';
 
 //.THEN handler chaining
-//every call to a .then returns a new promise
+//every call to a .then returns a (not exactly) new promise (then-able object to be precise)
+//“thenable” object is an arbitrary object that has a method .then. It will be treated the same way as a promise.
 
 new Promise(function (resolve, reject) {
   setTimeout(() => resolve(1), 1000);
@@ -58,13 +59,13 @@ new Promise(function (resolve, reject) {
 //example with loaded script
 function loadScript(src) {
   return new Promise(function (resolve, reject) {
-    let script = document.createElement('script');
+    // let script = document.createElement('script');
     script.src = src;
 
     script.onload = () => resolve(script);
     script.onerror = () => reject(new Error(`Script load error for ${src}`));
 
-    document.head.append(script);
+    // document.head.append(script);
   });
 }
 
@@ -78,3 +79,20 @@ loadScript('/article/promise-chaining/one.js')
     three();
   })
   .catch(console.error);
+
+//THENABLE OBJ
+class thenable {
+  constructor(num) {
+    this.num = num;
+  }
+  then(resolve, reject) {
+    console.log(resolve); //function() {native code}
+    setTimeout(() => resolve(this.num * 2), 1000);
+  }
+}
+
+new Promise((resolve) => resolve(1))
+  .then((result) => {
+    return new thenable(result);
+  })
+  .then(console.log);
