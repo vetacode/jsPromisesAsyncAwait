@@ -7,3 +7,8 @@ fetch('https://nowebsitehere.com')
   });
 
 console.log(1 == '1');
+
+//Implicit try…catch
+new Promise((resolve, reject) => {
+  reject(new Error('WTF!!!'));
+}).catch(console.error);
