@@ -54,3 +54,6 @@
   let loadScriptPromise = promisify(loadScript);
   loadScriptPromise().then();
 }
+
+//NOTES: a promise may have only one result, but a callback may technically be called many times.
+//promisification is only meant for functions that call the callback once. Further calls will be ignored.
