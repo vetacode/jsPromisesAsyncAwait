@@ -79,7 +79,8 @@ Promise.all(requests).then((responses) =>
   });
 }
 
-//Promise.race: klo kita butuh dapetin data yg paling cepet diterima, even if it success or reject.
+//3. Promise.race: Ambil yang pertama diterima (paling cepat)
+// klo kita butuh dapetin data yg paling cepet diterima, even if it success or reject.
 //After the first settled promise “wins the race”, all further results/errors are ignored.
 //Syntax: let promise = Promise.race(iterable);
 {
@@ -90,4 +91,33 @@ Promise.all(requests).then((responses) =>
     ),
     new Promise((resolve, reject) => setTimeout(() => resolve(3), 3000)),
   ]).then(console.log); // 1
+}
+
+//4. Promise.any: ambil yg pertama SUCCESS (sukses tercepat)
+//Jika semuanya gagal → error AggregateError.
+//Syntax:let promise = Promise.any(iterable);
+{
+  Promise.any([
+    new Promise((resolve, reject) =>
+      setTimeout(() => reject(new Error('Whoops!')), 1000)
+    ),
+    new Promise((resolve, reject) => setTimeout(() => resolve(1), 3000)),
+    new Promise((resolve, reject) => setTimeout(() => resolve(3), 2000)),
+  ]).then(console.log); // 3
+}
+
+//error AggregateError.
+{
+  Promise.any([
+    new Promise((resolve, reject) =>
+      setTimeout(() => reject(new Error('Ouch!')), 1000)
+    ),
+    new Promise((resolve, reject) =>
+      setTimeout(() => reject(new Error('Error!')), 2000)
+    ),
+  ]).catch((error) => {
+    console.log(error.constructor.name); // AggregateError
+    console.log(error.errors[0]); // Error: Ouch!
+    console.log(error.errors[1]); // Error: Error!
+  });
 }
