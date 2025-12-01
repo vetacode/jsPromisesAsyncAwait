@@ -45,3 +45,14 @@ Promise.all(requests).then((responses) =>
     // all JSON answers are parsed: "users" is the array of them
     .then((users) => users.forEach((user) => console.log(user.name)));
 }
+
+//it can also iterate not a promise objects, its passed resulting array as is
+{
+  Promise.all([
+    new Promise((resolve, reject) => {
+      setTimeout(() => resolve(1), 1000);
+    }),
+    2,
+    3,
+  ]).then(console.log); // [1, 2, 3]
+}
