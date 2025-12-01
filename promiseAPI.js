@@ -121,3 +121,13 @@ Promise.all(requests).then((responses) =>
     console.log(error.errors[1]); // Error: Error!
   });
 }
+
+//5. Promise.resolve
+//Promise.resolve(value) creates a resolved promise with the result value.
+//SAME AS: let promise = new Promise(resolve => resolve(value));
+
+//6. Promise.reject
+//Promise.reject(error) creates a rejected promise with error.
+//SAME AS: let promise = new Promise((resolve, reject) => reject(error));
+
+//NOTES: Promise.resolve/reject will be replaced by Async/await for best practices
