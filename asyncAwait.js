@@ -87,4 +87,40 @@ class Waiter {
   }
 }
 
-new Waiter().wait().then(console.log);
+new Waiter().wait().then(console.log); //'Waiting has done!'
+
+//Error handling
+//using await will automatically throws error if its rejected
+{
+  async function f() {
+    await Promise.reject(new Error('WTF!'));
+  }
+}
+//same as:
+{
+  async function f() {
+    throw new Error('WTF!');
+  }
+}
+
+//in the waiting we can catch the error using try..catch
+{
+  async function f() {
+    try {
+      let response = await fetch('http://no-such-url');
+    } catch (err) {
+      console.log(err); // TypeError: failed to fetch
+    }
+  }
+
+  f();
+}
+//if we dont use try catch but there is error, just append .catch after calling the fn
+{
+  async function f() {
+    let response = await fetch('http://no-such-url');
+  }
+
+  // f() becomes a rejected promise
+  f().catch(console.log); // TypeError: failed to fetch // (*)
+}
