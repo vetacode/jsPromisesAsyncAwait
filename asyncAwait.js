@@ -245,7 +245,15 @@ async function demoGithubUser() {
   return user;
 }
 
-demoGithubUser();
+async function run() {
+  try {
+    await demoGithubUser();
+  } catch (err) {
+    console.error('caight outside:', err);
+  }
+}
+
+run();
 
 /**TASK 3
  * Call async from non-async
@@ -264,17 +272,138 @@ function f() {
 }
 P.S. The task is technically very simple, but the question is quite common for developers new to async/await.
  */
+{
+  async function wait() {
+    await new Promise((resolve) => setTimeout(resolve, 1000));
 
-async function wait() {
-  await new Promise((resolve) => setTimeout(resolve, 1000));
+    // return 10;
+    //same as:
+    return Promise.resolve(10);
+  }
 
-  // return 10;
-  //same as:
-  return Promise.resolve(10);
+  function f() {
+    wait().then((result) => console.log(result)); //10
+  }
+
+  f();
+
+  /**TASK 4
+ * Dangerous Promise.all
+Promise.all is a great way to parallelize multiple operations. It’s especially useful when we need to make parallel requests to multiple services.
+
+However, there’s a hidden danger. We’ll see an example in this task and explore how to avoid it.
+
+Let’s say we have a connection to a remote service, such as a database.
+
+There’re two functions: connect() and disconnect().
+
+When connected, we can send requests using database.query(...) – an async function which usually returns the result but also may throw an error.
+
+Here’s a simple implementation:
+
+let database;
+
+function connect() {
+  database = {
+    async query(isOk) {
+      if (!isOk) throw new Error('Query failed');
+    }
+  };
 }
 
-function f() {
-  wait().then((result) => console.log(result)); //10
+function disconnect() {
+  database = null;
 }
 
-f();
+// intended usage:
+// connect()
+// ...
+// database.query(true) to emulate a successful call
+// database.query(false) to emulate a failed call
+// ...
+// disconnect()
+Now here’s the problem.
+
+We wrote the code to connect and send 3 queries in parallel (all of them take different time, e.g. 100, 200 and 300ms), then disconnect:
+
+// Helper function to call async function `fn` after `ms` milliseconds
+function delay(fn, ms) {
+  return new Promise((resolve, reject) => {
+    setTimeout(() => fn().then(resolve, reject), ms);
+  });
+}
+
+async function run() {
+  connect();
+
+  try {
+    await Promise.all([
+      // these 3 parallel jobs take different time: 100, 200 and 300 ms
+      // we use the `delay` helper to achieve this effect
+      delay(() => database.query(true), 100),
+      delay(() => database.query(false), 200),
+      delay(() => database.query(false), 300)
+    ]);
+  } catch(error) {
+    console.log('Error handled (or was it?)');
+  }
+
+  disconnect();
+}
+
+run();
+Two of these queries happen to be unsuccessful, but we’re smart enough to wrap the Promise.all call into a try..catch block.
+
+However, this doesn’t help! This script actually leads to an uncaught error in console!
+
+Why? How to avoid it?
+ */
+
+  let database;
+
+  function connect() {
+    database = {
+      async query(isOk) {
+        if (!isOk) throw new Error('Query failed');
+      },
+    };
+  }
+
+  function disconnect() {
+    database = null;
+  }
+
+  const delay = (fn, ms) =>
+    new Promise((resolve, reject) =>
+      setTimeout(() => {
+        try {
+          Promise.resolve(fn()).then(resolve, reject);
+        } catch (err) {
+          reject(err);
+        }
+      }, ms)
+    );
+
+  async function run() {
+    connect();
+
+    const tasks = [
+      delay(() => database.query(true), 100),
+      delay(() => database.query(false), 200),
+      delay(() => database.query(false), 300),
+    ];
+
+    try {
+      await Promise.all(tasks);
+    } catch (e) {
+      console.log(e.name);
+      console.log(e.message); //Query Failed
+      console.log('Error handled'); //Error handled
+    }
+
+    await Promise.allSettled(tasks); // tunggu semua selesai
+    disconnect();
+  }
+
+  run();
+}

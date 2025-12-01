@@ -2,7 +2,7 @@
 
 // 6 static methods in the Promise class:
 
-//1. Promise.all: dipake klo kita butuh semua sukses. klo satu gagal, semua operasi dianggap gagal (ga dapet hasilnya)
+//1. Promise.all: dipake klo kita butuh semua data sukses. klo satu gagal, semua operasi dianggap gagal (ga dapet hasilnya)
 //to execute many Promises in parallel and wait until all of them are ready.
 //Syntax: let promise = Promise.all(iterable);
 //It returns a new promise
