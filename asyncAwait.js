@@ -39,28 +39,22 @@
 }
 
 {
-  async function fetchAvatar() {
-    let response = await fetch('/article/promise-chaining/user.json');
-    let user = await response.json();
-
-    let gitHubResponse = await fetch(
-      `https://api.github.com/users/${user.name}`
-    );
-    let gitHubUser = await gitHubResponse.json();
-
-    let img = document.createElement('img');
-    img.src = githubUser.avatar_url;
-    img.className = 'promise-avatar-example';
-    document.body.append(img);
-
-    await new Promise((resolve, reject) => setTimeout(resolve, 3000));
-
-    img.remove;
-
-    return gitHubUser;
-  }
-
-  fetchAvatar();
+  // async function fetchAvatar() {
+  //   let response = await fetch('/article/promise-chaining/user.json');
+  //   let user = await response.json();
+  //   let gitHubResponse = await fetch(
+  //     `https://api.github.com/users/${user.name}`
+  //   );
+  //   let gitHubUser = await gitHubResponse.json();
+  //   let img = document.createElement('img');
+  //   img.src = githubUser.avatar_url;
+  //   img.className = 'promise-avatar-example';
+  //   document.body.append(img);
+  //   await new Promise((resolve, reject) => setTimeout(resolve, 3000));
+  //   img.remove;
+  //   return gitHubUser;
+  // }
+  // fetchAvatar();
 }
 
 //await accepts “thenables”
@@ -84,3 +78,13 @@
 
   f();
 }
+
+//Async class methods
+
+class Waiter {
+  async wait() {
+    return await Promise.resolve('Waiting has done!');
+  }
+}
+
+new Waiter().wait().then(console.log);
