@@ -56,3 +56,6 @@ Promise.all(requests).then((responses) =>
     3,
   ]).then(console.log); // [1, 2, 3]
 }
+
+//Promise.allSettled
+//its used when we need 'all or none' results succesfully to proceed
