@@ -2,7 +2,7 @@
 
 // 6 static methods in the Promise class:
 
-//1. Promise.all
+//1. Promise.all: dipake klo kita butuh semua sukses. klo satu gagal, semua operasi dianggap gagal (ga dapet hasilnya)
 //to execute many Promises in parallel and wait until all of them are ready.
 //Syntax: let promise = Promise.all(iterable);
 //It returns a new promise
@@ -57,5 +57,24 @@ Promise.all(requests).then((responses) =>
   ]).then(console.log); // [1, 2, 3]
 }
 
-//Promise.allSettled
-//its used when we need 'all or none' results succesfully to proceed
+//2. Promise.allSettled: dipake kalo kita butuh nampilin semua hasil nya, success ataupun error
+//its used when we need 'all or none' results succesfully to proceed: will shows every success and error
+//Semua promise akan tetap diproses sampai selesai walau ada yg error
+{
+  let urls = [
+    'https://api.github.com/users/iliakan',
+    'https://api.github.com/users/remy',
+    'https://no-such-url',
+  ];
+
+  Promise.allSettled(urls.map((url) => fetch(url))).then((results) => {
+    // (*)
+    results.forEach((result, num) => {
+      if (result.status == 'fulfilled') {
+        console.log(`${urls[num]}: ${result.value.status}`);
+      } else if (result.status == 'rejected') {
+        console.log(`${urls[num]}: ${result.reason}`);
+      }
+    });
+  });
+}
