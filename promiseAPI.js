@@ -78,3 +78,16 @@ Promise.all(requests).then((responses) =>
     });
   });
 }
+
+//Promise.race: klo kita butuh dapetin data yg paling cepet diterima, even if it success or reject.
+//After the first settled promise “wins the race”, all further results/errors are ignored.
+//Syntax: let promise = Promise.race(iterable);
+{
+  Promise.race([
+    new Promise((resolve, reject) => setTimeout(() => resolve(1), 1000)),
+    new Promise((resolve, reject) =>
+      setTimeout(() => reject(new Error('Whoops!')), 2000)
+    ),
+    new Promise((resolve, reject) => setTimeout(() => resolve(3), 3000)),
+  ]).then(console.log); // 1
+}
