@@ -23,6 +23,7 @@ Promise.all(requests).then((responses) =>
   )
 );
 
+//Converting array of promise<Response> to json data
 {
   let names = ['iliakan', 'remy', 'jeresig'];
 
