@@ -124,3 +124,9 @@ new Waiter().wait().then(console.log); //'Waiting has done!'
   // f() becomes a rejected promise
   f().catch(console.log); // TypeError: failed to fetch // (*)
 }
+
+//async/await works well with Promise.all
+// wait for the array of results
+let url1 = 'https://example1.com';
+let url2 = 'https://example2.com';
+let results = await Promise.all([fetch(url1), fetch(url2)]);
