@@ -11,3 +11,11 @@ console.log('code finished');
 
   console.log('done');
 }
+
+//to make it return result in order:
+{
+  let promise = Promise.resolve();
+  promise
+    .then(() => console.log('logs from .then'))
+    .then(() => console.log('code finished'));
+}
